@@ -42,8 +42,7 @@ public class BNode<E extends Comparable<E>> {
 
     //for add method
     public void add(BNode<E> root, E e) {
-        int compareValue = root.getData().compareTo(e);
-        if (compareValue > 0) {
+        if (root.getData().compareTo(e) > 0) {
             if (root.getLeft() == null) root.setLeft(new BNode<>(e));
             else add(root.getLeft(), e);
         } else {
