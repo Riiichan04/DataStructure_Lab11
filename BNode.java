@@ -32,10 +32,6 @@ public class BNode<E extends Comparable<E>> {
         return right;
     }
 
-    public void setData(E data) {
-        this.data = data;
-    }
-
     public void setLeft(BNode<E> left) {
         this.left = left;
     }
