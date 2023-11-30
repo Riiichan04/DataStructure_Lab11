@@ -1,5 +1,6 @@
 package lab11;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class BNode<E extends Comparable<E>> {
@@ -144,25 +145,34 @@ public class BNode<E extends Comparable<E>> {
     }
 
     //for descendants method
-    public List<E> addDescendants(BNode<E> node, List<E> list) {
+    public List<E> addDescendants(BNode<E> node, E data) {
+        List<E> result = new LinkedList<>();
         if (node != null) {
-            list.add(node.getData());
-            addDescendants(node.getLeft(), list);
-            addDescendants(node.getRight(), list);
-            return list;
-        } else return null;
+            if (node.getData().compareTo(data) != 0) result.add(node.getData());
+            if (node.getLeft() != null) {
+                result.addAll(addDescendants(node.left, data));
+            }
+            if (node.getRight() != null) {
+                result.addAll(addDescendants(node.right, data));
+            }
+        }
+        return result;
     }
 
     //for ancestor method
-    public List<E> addAncestors(BNode<E> root, E data, List<E> list) {
-        if (root == null) return null;
-        else {
-            list.add(root.getData());
-            if (root.getData().compareTo(data) == 0) return null;
-            else if (root.getData().compareTo(data) < 0) addAncestors(root.getRight(), data, list);
-            else addAncestors(root.getLeft(), data, list);
-            return list;
+    public List<E> addAncestors(E data) {
+        List<E> result = new LinkedList<>();
+        if (this.getData().compareTo(data) != 0) {
+            result.add(this.getData());
+            if (this.getData().compareTo(data) > 0 && this.left != null) {
+                result.addAll(this.left.addAncestors(data));
+            } else {
+                if (this.right != null) {
+                    result.addAll(this.right.addAncestors(data));
+                }
+            }
         }
+        return result;
     }
 
     //print BST

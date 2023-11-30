@@ -24,6 +24,8 @@ public class TestBST {
         System.out.println();
         tree.postorder();
         System.out.println();
+        System.out.println(tree.descendants(15));
+        System.out.println(tree.ancestors(90));
         System.out.println(tree.contains(25));
         System.out.println(tree.contains(100000));
         System.out.println(tree.depth(25));
@@ -35,8 +37,6 @@ public class TestBST {
         System.out.println(tree.size());
         tree.inorder();
         System.out.println();
-        System.out.println(tree.descendants(15));
-        System.out.println(tree.ancestors(10));
         System.out.println(tree.findMin());
         System.out.println(tree.findMax());
     }

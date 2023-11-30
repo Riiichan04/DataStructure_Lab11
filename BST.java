@@ -64,12 +64,12 @@ public class BST<E extends Comparable<E>> {
     // get the descendants of a node
     public List<E> descendants(E data) {
         BNode<E> currentNode = this.root.search(this.root, data);
-        return (currentNode == null) ? null : currentNode.addDescendants(currentNode, new LinkedList<>());
+        return (currentNode == null) ? null : currentNode.addDescendants(currentNode, currentNode.getData());
     }
 
     // get the ancestors of a node
     public List<E> ancestors(E data) {
-        return (this.root.search(this.root, data) == null) ? null : this.root.addAncestors(this.root, data, new LinkedList<>());
+        return (this.root.search(this.root, data) == null) ? null : this.root.addAncestors(data);
     }
 
     //Task 2
