@@ -46,7 +46,8 @@ public class BNode<E extends Comparable<E>> {
 
     //for add method
     public void add(BNode<E> root, E e) {
-        if (root.getData().compareTo(e) > 0) {
+        int compareValue = root.getData().compareTo(e);
+        if (compareValue > 0) {
             if (root.getLeft() == null) root.setLeft(new BNode<>(e));
             else add(root.getLeft(), e);
         } else {
@@ -57,9 +58,10 @@ public class BNode<E extends Comparable<E>> {
 
     public BNode<E> search(BNode<E> root, E node) {
         if (root != null) {
+            int compareValue = root.getData().compareTo(node);
             // like binary search
-            if (root.getData().compareTo(node) > 0) return search(root.getLeft(), node);
-            else if (root.getData().compareTo(node) < 0) return search(root.getRight(), node);
+            if (compareValue > 0) return search(root.getLeft(), node);
+            else if (compareValue < 0) return search(root.getRight(), node);
             else return root;
         } else return null;
     }
@@ -162,16 +164,16 @@ public class BNode<E extends Comparable<E>> {
     //for ancestor method
     public List<E> addAncestors(E data) {
         List<E> result = new LinkedList<>();
-        if (this.getData().compareTo(data) != 0) {
-            result.add(this.getData());
-            if (this.getData().compareTo(data) > 0 && this.left != null) {
-                result.addAll(this.left.addAncestors(data));
-            } else {
-                if (this.right != null) {
-                    result.addAll(this.right.addAncestors(data));
-                }
+        int compareValue = this.getData().compareTo(data);
+        if (compareValue != 0) result.add(this.getData());
+        if (compareValue > 0 && this.left != null) {
+            result.addAll(this.left.addAncestors(data));
+        } else {
+            if (this.right != null) {
+                result.addAll(this.right.addAncestors(data));
             }
         }
+
         return result;
     }
 
