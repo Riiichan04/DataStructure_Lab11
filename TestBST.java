@@ -24,6 +24,9 @@ public class TestBST {
         System.out.println();
         tree.postorder();
         System.out.println();
+        System.out.println(tree.contains(25));
+        System.out.println(tree.contains(100000));
+        System.out.println(tree.depth(25));
         System.out.println(tree.height());
         System.out.println(tree.depth(15));
         System.out.println(tree.size());

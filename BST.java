@@ -20,19 +20,13 @@ public class BST<E extends Comparable<E>> {
     }
 
     public void add(BNode<E> root, E e) {
-        if (this.root == null) {
-            this.setRoot(new BNode<>(e));
-        } else {
+        if (this.root == null) this.setRoot(new BNode<>(e));
+        else {
             if (root.getData().compareTo(e) > 0) {
-                if (root.getLeft() == null) {
-                    root.setLeft(new BNode<>(e));
-                }
+                if (root.getLeft() == null) root.setLeft(new BNode<>(e));
                 else add(root.getLeft(), e);
-            }
-            else {
-                if (root.getRight() == null) {
-                    root.setRight(new BNode<>(e));
-                }
+            } else {
+                if (root.getRight() == null) root.setRight(new BNode<>(e));
                 else add(root.getRight(), e);
             }
         }
@@ -40,55 +34,35 @@ public class BST<E extends Comparable<E>> {
 
     // Add a collection of elements col into BST
     public void add(Collection<E> col) {
-        for (E e : col) {
-            add(e);
-        }
+        for (E e : col) add(e);
     }
 
     // compute the depth of a node in BST
     public int depth(E node) {
-        if (this.root.getData().compareTo(node) == 0) return 0;
-        else {
-            BNode<E> currentNode = search(root, node);
-            if (currentNode != null) {
-                return findDepth(currentNode);
-            }
-            else return -1;
-        }
+        BNode<E> currentNode = search(this.root, node);
+        return (currentNode != null) ? findDepth(currentNode) : -1;
     }
 
     public BNode<E> search(BNode<E> root, E node) {
         if (root != null) {
             // like binary search
-            if (root.getData().compareTo(node) > 0) {
-                return search(root.getLeft(), node);
-            }
-            else if (root.getData().compareTo(node) < 0) {
-                return search(root.getRight(), node);
-            }
+            if (root.getData().compareTo(node) > 0) return search(root.getLeft(), node);
+            else if (root.getData().compareTo(node) < 0) return search(root.getRight(), node);
             else return root;
-        }
-        else return null;
+        } else return null;
     }
 
     public int findDepth(BNode<E> node) {
-        // if node is root
-        if (node == null) return 0;
-            // if node have 2 child
-        else if (node.getLeft() != null && node.getRight() != null) {
+        // if node have 2 child
+        if (node.getLeft() != null && node.getRight() != null) {
             int leftDepth = 1 + findDepth(node.getLeft());
             int rightDepth = 1 + findDepth(node.getRight());
             return Math.max(leftDepth, rightDepth);
         }
         // if node is leaf
-        else if (node.getLeft() == null && node.getRight() == null) {
-            return 0;
-        }
-        // if node have 1 child
-        else if (node.getLeft() == null) {
-            return 1 + findDepth(node.getRight());
-        }
-        else return 1 + findDepth(node.getLeft());
+        else if (node.getLeft() == null && node.getRight() == null) return 0;
+            // if node have 1 child
+        else return (node.getLeft() == null) ? 1 + findDepth(node.getRight()) : 1 + findDepth(node.getLeft());
     }
 
     // compute the height of BST
@@ -98,37 +72,22 @@ public class BST<E extends Comparable<E>> {
 
     // Compute total nodes in BST
     public int size() {
-        return countSize(root);
-    }
-
-    public int countSize(BNode<E> root) {
-        if (root == null) return 0;
-        else return 1 + countSize(root.getRight()) + countSize(root.getLeft());
+        return this.root.countSize(this.root);
     }
 
     // Check whether element e is in BST
     public boolean contains(E e) {
-        return search(root, e) != null;
+        return search(this.root, e) != null;
     }
 
     // Find the minimum element in BST
     public E findMin() {
-        return findMinWithBranch(this.root);
-    }
-
-    public E findMinWithBranch(BNode<E> e) {
-        if (e.getLeft() == null) return e.getData();
-        else return findMinWithBranch(e.getLeft());
+        return this.root.findMinWithBranch(this.root);
     }
 
     // Find the maximum element in BST
     public E findMax() {
-        return findMaxWithBranch(this.root);
-    }
-
-    public E findMaxWithBranch(BNode<E> e) {
-        if (e.getRight() == null) return e.getData();
-        else return findMaxWithBranch(e.getRight());
+        return this.root.findMaxWithBranch(this.root);
     }
 
     // Remove element e from BST
@@ -143,13 +102,9 @@ public class BST<E extends Comparable<E>> {
                 else parent.setLeft(null);
             }
             //if Node have 1 child
-            else if (removeNode.getLeft() == null) {
-                parent.setRight(removeNode.getRight());
-            }
-            else if (removeNode.getRight() == null) {
-                parent.setLeft(removeNode.getLeft());
-            }
-            // if Node have 2 child
+            else if (removeNode.getLeft() == null) parent.setRight(removeNode.getRight());
+            else if (removeNode.getRight() == null) parent.setLeft(removeNode.getLeft());
+                // if Node have 2 child
             else {
                 BNode<E> newNode = findSuccessor(removeNode.getRight());
                 // recreate Successor node
@@ -170,119 +125,50 @@ public class BST<E extends Comparable<E>> {
     }
 
     public BNode<E> findNodeParent(BNode<E> node, E data) {
+        //if Node have 2 child
         if (node.getLeft() != null && node.getRight() != null) {
-            if (node.getLeft().getData().compareTo(data) == 0 || node.getRight().getData().compareTo(data) == 0) {
+            if (node.getLeft().getData().compareTo(data) == 0 || node.getRight().getData().compareTo(data) == 0)
                 return node;
-            }
             else {
                 BNode<E> leftVal = findNodeParent(node.getLeft(), data);
                 BNode<E> rightVal = findNodeParent(node.getRight(), data);
                 return (leftVal != null) ? leftVal : rightVal;
             }
         }
-        else if (node.getLeft() == null && node.getRight() == null) {
-            return null;
-        }
-        else if (node.getLeft() == null) {
-            if (node.getRight().getData().compareTo(data) == 0) {
-                return node;
-            }
-            else return findNodeParent(node.getRight(), data);
-        }
+        //if Node have 0 child
+        else if (node.getLeft() == null && node.getRight() == null) return null;
+            //if Node have 1 child
         else {
-            if (node.getLeft().getData().compareTo(data) == 0) {
-                return node;
-            }
-            else return findNodeParent(node.getLeft(), data);
+            if (node.getLeft() == null) {
+                return (node.getRight().getData().compareTo(data) == 0) ? node : findNodeParent(node.getRight(), data);
+            } else return (node.getLeft().getData().compareTo(data) == 0) ? node : findNodeParent(node.getLeft(), data);
         }
     }
 
     // get the descendants of a node
     public List<E> descendants(E data) {
-        BNode<E> currentNode = search(root, data);
-        List<E> result = new LinkedList<>();
-        if (currentNode == null) return null;
-        else {
-            return addDescendants(currentNode, result);
-        }
-    }
-
-    public List<E> addDescendants(BNode<E> node, List<E> list) {
-        if (node != null) {
-            list.add(node.getData());
-            addDescendants(node.getLeft(), list);
-            addDescendants(node.getRight(), list);
-            return list;
-        }
-        else return null;
+        BNode<E> currentNode = search(this.root, data);
+        return (currentNode == null) ? null : currentNode.addDescendants(currentNode, new LinkedList<>());
     }
 
     // get the ancestors of a node
     public List<E> ancestors(E data) {
-        BNode<E> currentNode = search(root, data);
-        List<E> result = new LinkedList<>();
-        if (currentNode == null) return null;
-        else {
-            return addAncestors(this.root, data, result);
-        }
-    }
-
-    public List<E> addAncestors(BNode<E> root, E data, List<E> list) {
-        if (root == null) {
-            return null;
-        }
-        else {
-            list.add(root.getData());
-            if (root.getData().compareTo(data) == 0) return null;
-            else if (root.getData().compareTo(data) < 0) addAncestors(root.getRight(), data, list);
-            else addAncestors(root.getLeft(), data, list);
-            return list;
-        }
+        return (search(this.root, data) == null) ? null : this.root.addAncestors(this.root, data, new LinkedList<>());
     }
 
     //Task 2
     // display BST using inorder approach
     public void inorder() {
-        inorderPrint(this.root);
-    }
-
-    public void inorderPrint(BNode<E> node) {
-        if (node.getLeft() != null) {
-            inorderPrint(node.getLeft());
-        }
-        System.out.print(node + " ");
-        if (node.getRight() != null) {
-            inorderPrint(node.getRight());
-        }
+        this.root.inorderPrint(this.root);
     }
 
     // display BST using preorder approach
     public void preorder() {
-        preorderPrint(this.root);
-    }
-
-    public void preorderPrint(BNode<E> node) {
-        System.out.print(node + " ");
-        if (node.getLeft() != null) {
-            preorderPrint(node.getLeft());
-        }
-        if (node.getRight() != null) {
-            preorderPrint(node.getRight());
-        }
+        this.root.preorderPrint(this.root);
     }
 
     // display BST using postorder approach
     public void postorder() {
-        postorderPrint(this.root);
-    }
-
-    public void postorderPrint(BNode<E> node) {
-        if (node.getLeft() != null) {
-            postorderPrint(node.getLeft());
-        }
-        if (node.getRight() != null) {
-            postorderPrint(node.getRight());
-        }
-        System.out.print(node + " ");
+        this.root.postorderPrint(this.root);
     }
 }
