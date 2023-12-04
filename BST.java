@@ -58,7 +58,10 @@ public class BST<E extends Comparable<E>> {
 
     // Remove element e from BST
     public boolean remove(E e) {
-        return this.root.remove(e);
+        if (this.root.getData().compareTo(e) == 0) {
+            this.setRoot(this.root.removeRoot(e));
+            return true;
+        } else return this.root.remove(e);
     }
 
     // get the descendants of a node

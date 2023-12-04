@@ -116,6 +116,18 @@ public class BNode<E extends Comparable<E>> {
         }
         return true;
     }
+    //remove root
+    public BNode<E> removeRoot(E e) {
+        BNode<E> removeNode = search(this, e);
+        BNode<E> newNode = findSuccessor(removeNode.getRight());
+        // recreate Successor node
+        remove(newNode.getData());
+        newNode.setLeft(removeNode.getLeft());
+        newNode.setRight(removeNode.getRight());
+        // add Successor node
+        return newNode;
+    }
+
 
     public BNode<E> findSuccessor(BNode<E> node) {
         return (node.getLeft() == null) ? node : findSuccessor(node.getLeft());
@@ -168,7 +180,6 @@ public class BNode<E extends Comparable<E>> {
                 result.addAll(this.right.addAncestors(data));
             }
         }
-
         return result;
     }
 

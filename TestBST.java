@@ -33,7 +33,7 @@ public class TestBST {
         System.out.println(tree.height());
         System.out.println(tree.depth(15));
         System.out.println(tree.size());
-        System.out.println(tree.remove(44));
+        System.out.println(tree.remove(25));
         System.out.println(tree.remove(50));
         System.out.println(tree.remove(1000));
         System.out.println(tree.size());
